@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="color-scheme" content="dark" />
+<meta name="description" content="ML Arena runs machine-learning analysis on your own spreadsheet, entirely on this computer. No cloud, no accounts, no upload." />
+<title>ML Arena — Where models compete. You just pick the goal.</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="bg-glow" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ============================ top bar ============================ -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="#fff" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 8l4.6 3.5L12 4.5l4.4 7L21 8l-2 10.5H5z" />
+          <path d="M5.6 21h12.8" />
+        </svg>
+      </span>
+      <span class="brand-text">
+        <span class="brand-name">ML Arena</span>
+        <span class="brand-tag">Where models compete. You just pick the goal.</span>
+      </span>
+    </div>
+    <div class="topbar-right">
+      <span class="pill pill-local" title="Nothing is uploaded. Every calculation happens on this machine.">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="4.5" y="10.5" width="15" height="9.5" rx="2" />
+          <path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" />
+        </svg>
+        Runs on this computer only
+      </span>
+      <span class="pill pill-version" id="version-pill">v1.0.0</span>
+    </div>
+  </div>
+  <div class="working" id="working" hidden>
+    <span class="working-track"><span class="working-fill" id="working-fill"></span></span>
+    <span class="working-text" id="working-text">Working…</span>
+  </div>
+</header>
+
+<!-- ============================ progress rail ============================ -->
+<nav class="rail-wrap" aria-label="Steps">
+  <ol class="rail" id="rail">
+    <li class="rail-item">
+      <button type="button" class="rail-step" data-goto="1" aria-current="step">
+        <span class="rail-num">1</span><span class="rail-label">Start</span>
+      </button>
+    </li>
+    <li class="rail-item">
+      <button type="button" class="rail-step" data-goto="2" disabled>
+        <span class="rail-num">2</span><span class="rail-label">Your data</span>
+      </button>
+    </li>
+    <li class="rail-item">
+      <button type="button" class="rail-step" data-goto="3" disabled>
+        <span class="rail-num">3</span><span class="rail-label">The goal</span>
+      </button>
+    </li>
+    <li class="rail-item">
+      <button type="button" class="rail-step" data-goto="4" disabled>
+        <span class="rail-num">4</span><span class="rail-label">The columns</span>
+      </button>
+    </li>
+    <li class="rail-item">
+      <button type="button" class="rail-step" data-goto="5" disabled>
+        <span class="rail-num">5</span><span class="rail-label">Watch it work</span>
+      </button>
+    </li>
+    <li class="rail-item">
+      <button type="button" class="rail-step" data-goto="6" disabled>
+        <span class="rail-num">6</span><span class="rail-label">Your answer</span>
+      </button>
+    </li>
+  </ol>
+</nav>
+
+<main id="main">
+
+  <!-- ============================ STEP 1 ============================ -->
+  <section class="step" id="step-1" data-step="1" aria-labelledby="step-1-title">
+    <div class="hero">
+      <p class="hero-kicker">
+        <span class="dot-live" aria-hidden="true"></span>
+        100% local · nothing leaves this computer
+      </p>
+      <h1 class="hero-title" id="step-1-title" tabindex="-1">ML Arena</h1>
+      <p class="hero-tagline">Where models compete. You just pick the goal.</p>
+      <p class="hero-sub">
+        Bring a spreadsheet. We line up a dozen different machine-learning methods, let them all
+        compete on your data, and hand you back one plain-English answer — what drives the numbers,
+        which records to look at first, and how much money is at stake. Everything runs right here
+        on this computer: no cloud, no account, no data leaving the machine.
+      </p>
+    </div>
+
+    <div class="dropzone" id="dropzone">
+      <span class="dropzone-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 16V4" /><path d="M7.5 8.5L12 4l4.5 4.5" />
+          <path d="M4 16.5v1.8A2.7 2.7 0 0 0 6.7 21h10.6A2.7 2.7 0 0 0 20 18.3v-1.8" />
+        </svg>
+      </span>
+      <p class="dropzone-title">Drop your file here</p>
+      <p class="dropzone-sub">CSV, Excel, Parquet or JSON — up to 4 GB. We read it as fast as your machine allows.</p>
+      <label class="btn btn-primary" for="file-input">Choose a file</label>
+      <input type="file" id="file-input" class="sr-only" accept=".csv,.tsv,.txt,.xlsx,.xls,.parquet,.json" />
+      <p class="dropzone-hint">Prefer to type a path? Just drag the file straight from your folder.</p>
+    </div>
+
+    <section class="panel" aria-labelledby="cap-title">
+      <div class="panel-head">
+        <h2 id="cap-title" class="panel-title">This machine</h2>
+        <span class="panel-note">measured just now</span>
+      </div>
+      <div class="cap-strip" id="cap-strip">
+        <span class="cap-skeleton">Checking what this computer can do…</span>
+      </div>
+      <p class="cap-foot" id="cap-foot"></p>
+    </section>
+
+    <section class="panel" aria-labelledby="samples-title">
+      <div class="panel-head">
+        <h2 id="samples-title" class="panel-title">Or start with a bundled sample</h2>
+        <span class="panel-note">shipped with the app, works offline</span>
+      </div>
+      <p class="panel-lede">
+        These are realistic business datasets. Pick one and you can be looking at results in under a
+        minute — a good way to see what ML Arena does before you trust it with your own numbers.
+      </p>
+      <div class="sample-grid" id="sample-grid">
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+        <div class="skeleton-card"></div>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============================ STEP 2 ============================ -->
+  <section class="step" id="step-2" data-step="2" hidden aria-labelledby="step-2-title">
+    <header class="step-head">
+      <p class="step-eyebrow">Step 2</p>
+      <h2 class="step-title" id="step-2-title" tabindex="-1">Your data</h2>
+      <p class="step-sub">
+        Here is what we found in your file. Nothing has been changed — we only ever read it.
+      </p>
+    </header>
+    <div id="dataset-summary"></div>
+
+    <section class="panel" aria-labelledby="cols-title">
+      <div class="panel-head">
+        <h2 id="cols-title" class="panel-title">Every column, in plain words</h2>
+        <span class="panel-note" id="cols-note"></span>
+      </div>
+      <p class="panel-lede">
+        We work out what each column actually <em>is</em> — money, a category, a date, an ID — so
+        that later we only ever offer you columns that make sense for the question you asked.
+      </p>
+      <div class="table-scroll" id="column-table"></div>
+    </section>
+
+    <section class="panel" id="builder-panel" aria-labelledby="builder-title">
+      <div class="panel-head">
+        <h2 id="builder-title" class="panel-title">Create a column</h2>
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-fn-ref">
+          Function reference
+        </button>
+      </div>
+      <p class="panel-lede">
+        Sometimes the number you care about isn't in the file yet — a margin, a discount, a duration.
+        Build it once here and it becomes a real column you can pick in the next step.
+        <strong>Your original file is never modified</strong> — we keep the new column alongside a
+        fresh copy of your data.
+      </p>
+
+      <div class="suggest-row" id="suggestion-chips"></div>
+
+      <form class="builder-form" id="builder-form" autocomplete="off">
+        <div class="field">
+          <label for="derived-name">New column name</label>
+          <input type="text" id="derived-name" name="name" placeholder="discount_pct" spellcheck="false" />
+        </div>
+        <div class="field">
+          <label for="derived-expr">How to work it out</label>
+          <input type="text" id="derived-expr" name="expression" class="mono" spellcheck="false"
+                 placeholder="(list_price - net_price) / list_price" />
+          <p class="field-help" id="expr-help">
+            Use column names exactly as they appear above, plus <span class="mono">+ − * /</span> and
+            the functions below.
+          </p>
+        </div>
+        <div class="builder-actions">
+          <button type="submit" class="btn btn-primary" id="btn-preview">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z" />
+              <circle cx="12" cy="12" r="2.6" />
+            </svg>
+            Preview
+          </button>
+          <button type="button" class="btn btn-ghost" id="btn-stage">Add to the list</button>
+        </div>
+      </form>
+
+      <div class="helper" id="fn-helper" aria-label="Function and operator helper"></div>
+
+      <div class="preview-box" id="preview-out" hidden></div>
+
+      <div class="staged" id="staged-box" hidden>
+        <h3 class="sub-title">Waiting to be added</h3>
+        <ul class="staged-list" id="staged-list"></ul>
+        <button type="button" class="btn btn-primary" id="btn-apply">
+          Add these columns to my data
+        </button>
+      </div>
+    </section>
+
+    <div class="step-nav">
+      <button type="button" class="btn btn-ghost" data-goto="1">Back to start</button>
+      <button type="button" class="btn btn-primary" data-goto="3" id="to-step-3">
+        Next: what do you want to find?
+      </button>
+    </div>
+  </section>
+
+  <!-- ============================ STEP 3 ============================ -->
+  <section class="step" id="step-3" data-step="3" hidden aria-labelledby="step-3-title">
+    <header class="step-head">
+      <p class="step-eyebrow">Step 3</p>
+      <h2 class="step-title" id="step-3-title" tabindex="-1">What do you want to find?</h2>
+      <p class="step-sub">
+        Pick the business question. Don't worry about the technique — we choose the maths, you choose
+        the goal.
+      </p>
+    </header>
+
+    <div class="hint-card" id="usecase-hint" hidden>
+      <span class="hint-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 3l1.7 4.6L18.5 9l-4.8 1.4L12 15l-1.7-4.6L5.5 9l4.8-1.4z" />
+          <path d="M18.6 15.2l.9 2.3 2.3.9-2.3.9-.9 2.3-.9-2.3-2.3-.9 2.3-.9z" />
+        </svg>
+      </span>
+      <p id="usecase-hint-text"></p>
+    </div>
+
+    <div id="usecase-groups">
+      <div class="skeleton-card tall"></div>
+      <div class="skeleton-card tall"></div>
+    </div>
+
+    <div class="step-nav">
+      <button type="button" class="btn btn-ghost" data-goto="2">Back to your data</button>
+      <button type="button" class="btn btn-primary" data-goto="4" id="to-step-4" disabled>
+        Next: point us at the right columns
+      </button>
+    </div>
+  </section>
+
+  <!-- ============================ STEP 4 ============================ -->
+  <section class="step" id="step-4" data-step="4" hidden aria-labelledby="step-4-title">
+    <header class="step-head">
+      <p class="step-eyebrow">Step 4</p>
+      <h2 class="step-title" id="step-4-title" tabindex="-1">Point us at the right columns</h2>
+      <p class="step-sub" id="step-4-sub">
+        We only offer columns that make sense for each slot, so you can't accidentally point a model
+        at the wrong thing.
+      </p>
+    </header>
+
+    <div class="role-grid" id="role-pickers"></div>
+
+    <section class="panel confirm-panel" aria-labelledby="confirm-title">
+      <div class="panel-head">
+        <h2 id="confirm-title" class="panel-title">Before we start</h2>
+      </div>
+      <div id="role-confirm"></div>
+      <div class="step-nav">
+        <button type="button" class="btn btn-ghost" data-goto="3">Back to the goal</button>
+        <button type="button" class="btn btn-primary btn-lg" id="btn-run" disabled>
+          Run the competition
+        </button>
+      </div>
+    </section>
+  </section>
+
+  <!-- ============================ STEP 5 ============================ -->
+  <section class="step" id="step-5" data-step="5" hidden aria-labelledby="step-5-title">
+    <header class="step-head">
+      <p class="step-eyebrow">Step 5</p>
+      <h2 class="step-title" id="step-5-title" tabindex="-1">Watch it work</h2>
+      <p class="step-sub">
+        Every model is trained right here, one after another, and they all get judged the same way.
+        This usually takes a few seconds; big files take longer.
+      </p>
+    </header>
+
+    <div class="banner" id="now-banner" aria-live="polite">
+      <span class="banner-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="8.6" /><path d="M12 7.4V12l3.2 2" />
+        </svg>
+      </span>
+      <span class="banner-body">
+        <span class="banner-title" id="banner-title">Warming up…</span>
+        <span class="banner-detail" id="banner-detail">Getting your data ready.</span>
+      </span>
+      <span class="banner-idle" id="banner-idle" hidden>still working — large data takes a moment</span>
+    </div>
+
+    <section class="panel progress-panel" aria-label="Overall progress">
+      <div class="progress-head">
+        <span id="progress-label">Starting</span>
+        <span class="progress-pct" id="progress-pct">0%</span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar">
+        <div class="progress-fill" id="progress-fill"></div>
+      </div>
+      <p class="progress-note" id="progress-note">Models train one at a time so the numbers are comparable.</p>
+    </section>
+
+    <div class="live-grid">
+      <section class="panel console-panel" aria-labelledby="console-title">
+        <div class="panel-head">
+          <h2 id="console-title" class="panel-title">Live narration</h2>
+          <span class="panel-note" id="console-count">0 events</span>
+        </div>
+        <div class="console" id="console" tabindex="0" role="log" aria-live="polite" aria-label="Live narration log"></div>
+        <button type="button" class="jump-btn" id="console-jump" hidden>Jump to latest ↓</button>
+      </section>
+
+      <section class="panel board-panel" aria-labelledby="board-title">
+        <div class="panel-head">
+          <h2 id="board-title" class="panel-title">Model scoreboard</h2>
+          <span class="panel-note" id="board-count">0 models</span>
+        </div>
+        <div class="table-scroll" id="scoreboard">
+          <p class="empty-note">The scoreboard fills in as each model finishes its turn.</p>
+        </div>
+      </section>
+    </div>
+  </section>
+
+  <!-- ============================ STEP 6 ============================ -->
+  <section class="step" id="step-6" data-step="6" hidden aria-labelledby="step-6-title">
+    <header class="step-head">
+      <p class="step-eyebrow">Step 6</p>
+      <h2 class="step-title" id="step-6-title" tabindex="-1">Your answer</h2>
+      <p class="step-sub" id="step-6-sub"></p>
+    </header>
+    <div id="results"></div>
+    <div class="step-nav">
+      <button type="button" class="btn btn-ghost" data-goto="5">Back to the race</button>
+      <button type="button" class="btn btn-primary" id="btn-start-over">Start over with new data</button>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <span>ML Arena <span id="footer-version">v1.0.0</span> · runs entirely on this computer</span>
+  <span class="footer-sep" aria-hidden="true">·</span>
+  <span id="footer-cap">CPU only — no GPU needed</span>
+</footer>
+
+<div class="toasts" id="toasts" aria-live="polite" aria-atomic="false"></div>
+
+<div class="modal-backdrop" id="modal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-head">
+      <h2 id="modal-title">Reference</h2>
+      <button type="button" class="icon-btn" id="modal-close" aria-label="Close">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" />
+        </svg>
+      </button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<noscript>
+  <p class="noscript">ML Arena needs JavaScript switched on — all the analysis happens in your browser's conversation with the local server.</p>
+</noscript>
+
+<script src="charts.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

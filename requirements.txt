@@ -1,0 +1,29 @@
+# ML Arena — runtime dependencies
+#
+# Everything here is installed and used locally. There is no cloud SDK, no API
+# client and no LLM library, because the application never makes a network call.
+
+# --- data engine ------------------------------------------------------------
+polars>=1.20          # columnar engine used for all reading and reshaping
+pyarrow>=15.0         # Parquet / Arrow interop and the CSV/Excel bridge
+pandas>=2.0           # Excel reading, and the sklearn boundary
+numpy>=1.26
+
+# --- machine learning -------------------------------------------------------
+scikit-learn>=1.4
+xgboost>=2.0
+lightgbm>=4.0
+scipy>=1.11
+joblib>=1.3
+
+# --- exports ----------------------------------------------------------------
+openpyxl>=3.1
+
+# --- web layer --------------------------------------------------------------
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-multipart>=0.0.9   # required by FastAPI for file uploads
+websockets>=12            # live event streaming to the browser
+
+# --- development (optional) -------------------------------------------------
+# pytest>=8.0
